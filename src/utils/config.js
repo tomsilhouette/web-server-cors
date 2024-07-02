@@ -1,4 +1,4 @@
-export const PORT = process.env.PORT
+export const PORT = process.env.PORT || 4000
 export const HTTP_URL = process.env.HTTP_URL 
 export const JWT_SECRET = process.env.JWT_SECRET
 export const JWT_EXPIRY = process.env.JWT_EXPIRY

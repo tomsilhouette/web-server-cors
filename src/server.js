@@ -13,9 +13,11 @@ app.disable('x-powered-by');
 
 // Add middleware
 app.use(
-  cors({ 
-    origin: "*"
-   // origin: "https://ambitious-ocean-09f9fbd03-preview.westeurope.5.azurestaticapps.net/"
+  cors({
+    origin: 'https://localhost:7214',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    allowedHeaders: 'Content-Type, Authorization',
+    optionsSuccessStatus: 200, // Some legacy browsers (IE11, various SmartTVs) choke on 204
   })
 );
 
@@ -34,11 +36,14 @@ app.get('/', (req, res) => {
 });
 
 app.get('/test-get', (req, res) => {
-  res.status(200).send("hello get")
+  res.status(200).send('hello get');
 });
 
-app.post('/test-post', (req, res) => {
-  res.status(201).send("hello post")
+app.post('/test-post-working', (req, res) => {
+  res.status(201).send({
+    status: 'POST REQUEST RECIEVED',
+    data: 'CORS policy was accepted',
+  });
 });
 
 // For all unknown requests 404 page returns
@@ -54,14 +59,14 @@ app.all('*', (req, res) => {
 });
 
 app.use((error, req, res, next) => {
-  console.error(error)
+  console.error(error);
 
   if (error.code === 'P2025') {
-    return sendDataResponse(res, 404, 'Record does not exist')
+    return sendDataResponse(res, 404, 'Record does not exist');
   }
 
-  return sendDataResponse(res, 500)
-})
+  return sendDataResponse(res, 500);
+});
 
 // Start our API server
 app.listen(PORT, () => {
